@@ -8,6 +8,7 @@ import {getResults} from '../alghoritms/imageProcessing/getPoints';
 import Jimp from 'jimp';
 import 'react-image-crop/dist/ReactCrop.css';
 import '../styles/mainPage.css'
+import DeviationResultTable from '../components/DeviationResultTable'
 
 const LEFT_PROCESS_IMAGE = "leftProcessImage";
 const RIGHT_PROCESS_IMAGE = "rightProcessImage";
@@ -22,8 +23,8 @@ class MainPage extends Component{
         rightProcessImage: "",
         pointsProcessImage: "",
         settingImage: "",
-        rightChartDeviations: [],
-        leftChartDeviations: [],
+        rightChartDeviations: new Array(),
+        leftChartDeviations: new Array(),
         onePxInMm: 0        
     }    
 
@@ -100,6 +101,10 @@ class MainPage extends Component{
         return (
             <>
                 <div>
+                    <DeviationResultTable leftChartDeviations = {this.state.leftChartDeviations.reverse()} rightChartDeviations = {this.state.rightChartDeviations.reverse()}/>
+                </div>
+
+                <div>
                     <input type="file" accept = {"image/png"} onChange = {this.loadImage}></input>
                     <Button title = {"Process image"} clickAction = {this.processImage}/>
                 </div>
@@ -129,10 +134,10 @@ class MainPage extends Component{
                 </p>
 
                 <p style = {{color: "white"}}>
-                    {"Deviations of left chart: " + this.state.leftChartDeviations.reverse().join(", ")}
+                    {"Deviations of left chart: " + this.state.leftChartDeviations.join(", ")}
                 </p>
                 <p style = {{color: "white"}}>
-                    {"Deviations of right chart: " + this.state.rightChartDeviations.reverse().join(", ")}
+                    {"Deviations of right chart: " + this.state.rightChartDeviations.join(", ")}
                 </p>
             </>
             
