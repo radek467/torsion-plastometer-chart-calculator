@@ -8,21 +8,21 @@ let startTurningPoints = [];
 let differenceBetweenPoints;
 
 export async function getResults(images, onePxInMm, turnsPoints) {
-    const momentChart = images.leftChart;
-    const strengthChart = images.rightChart;
-    const leftChartDeviations = [];
-    const rightChartDeviations = [];
+    const momentChart = images.momentChart;
+    const strengthChart = images.strengthChart;
+    const momentChartDeviations = [];
+    const strengthChartDeviations = [];
     startTurningPoints = turnsPoints;
 
     differenceBetweenPoints = Math.abs(startTurningPoints[0] - startTurningPoints[1]);
-    const leftResult = await getChartDeviationsInMm(momentChart, leftChartDeviations, onePxInMm)
-    const rightResult = await getChartDeviationsInMm(strengthChart, rightChartDeviations, onePxInMm)
+    const momentResult = await getChartDeviationsInMm(momentChart, momentChartDeviations, onePxInMm)
+    const strengthResult = await getChartDeviationsInMm(strengthChart, strengthChartDeviations, onePxInMm)
 
     return {
-        leftChartDeviations: leftResult.deviationsInMm,
-        rightChartDeviations: rightResult.deviationsInMm,
-        leftImageToReturn: leftResult.image,
-        rightImageToReturn: rightResult.image
+        momentChartDeviations: momentResult.deviationsInMm,
+        strengthChartDeviations: strengthResult.deviationsInMm,
+        momentImageToReturn: momentResult.image,
+        strengthImageToReturn: strengthResult.image
     }
 }
 
@@ -58,8 +58,8 @@ async function getChartDeviationsInMm(imageToProcess, points, onePxInMm) {
             const deviationsInMm = calculateDeviation([...chartPointsForFoundTurns], startOfTurns, onePxInMm);
             let returnImage = "";
             await image.getBase64(Jimp.MIME_PNG, (err, buffer) => {
-                            returnImage = buffer;
-                        });
+                returnImage = buffer;
+            });
             resultObject = {
                 image: returnImage,
                 deviationsInMm

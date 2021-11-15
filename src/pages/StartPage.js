@@ -16,8 +16,11 @@ const LEFT_PROCESS_IMAGE = "leftProcessImage";
 const RIGHT_PROCESS_IMAGE = "rightProcessImage";
 const POINTS_PROCESS_IMAGE = "pointsProcessImage";
 
-
-class MainPage extends Component {
+/**
+ * Start page should be modified as a start page not page to do calculations
+ */
+//todo as above
+class StartPage extends Component {
     state = {
         initialImage: "",
         imageAfterClearBackground: "",
@@ -113,12 +116,12 @@ class MainPage extends Component {
         return (
             <>
                 <div>
-                    <DeviationResultTable leftChartDeviations={this.state.leftChartDeviations.reverse()}
-                                          rightChartDeviations={this.state.rightChartDeviations.reverse()}/>
+                    <DeviationResultTable momentChartDeviations={this.state.leftChartDeviations.reverse()}
+                                          strengthChartDeviations={this.state.rightChartDeviations.reverse()}/>
                 </div>
 
                 <div>
-                    <input type="file" accept={"image/png"} onChange={this.loadImage}></input>
+                    <input type="file" accept={"image/*"} onChange={this.loadImage}></input>
                     <Button title={"Process image"} clickAction={this.processImage}/>
                 </div>
 
@@ -165,5 +168,5 @@ class MainPage extends Component {
     }
 }
 
-export default MainPage;
+export default StartPage;
 

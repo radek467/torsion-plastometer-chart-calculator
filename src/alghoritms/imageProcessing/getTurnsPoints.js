@@ -18,9 +18,9 @@ export function getTurnsPoints(turnsImage) {
                     }
                 );
         })
-        .then((image) => {
+        .then(async (image) => {
             const resultPointArray = setBlackPointsAccordingAverageTurningLength([...turningPoints]);
-            return {image, turningPoints: [...resultPointArray]};
+            return [...resultPointArray];
         });
 }
 

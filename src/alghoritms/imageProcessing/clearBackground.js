@@ -19,8 +19,10 @@ const BLACK_THRESHOLD = 10;  // Replace colors under this threshold. The smaller
  * @param initialImage is a given image where background should be cleared and chart color shloud be changed to black
  * @returns Promise with processed image
  */
-export function clearBackground(initialImage) {
-    return Jimp.read(initialImage)
+export async function clearBackground(initialImage) {
+    let resultImage = "";
+
+    await Jimp.read(initialImage)
         .then(image => {
             return image
                 .quality(100)
@@ -35,8 +37,12 @@ export function clearBackground(initialImage) {
                 .scan(0, 0, image.bitmap.width - widthOfNotInterpolateImageFragment, image.bitmap.height, (x, y, idx) => {
                     image = interpolateChartsByFindingClosestNeighbourOfEachPoint(image, x, y)
                 })
-
+        }).then(image => {
+            image.getBase64(Jimp.MIME_PNG, (err, buffer) => {
+                resultImage = buffer;
+            })
         })
+    return resultImage;
 }
 
 function processBackgroundAndChartColors(image, x, y) {

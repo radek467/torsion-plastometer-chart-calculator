@@ -1,0 +1,17 @@
+.navbar {
+    height: 10vh;
+    background-color: #505050;
+    line-height: 10vh;
+    border-bottom: 1px solid #61dafb;
+    border-top: 1px solid #61dafb;
+    margin-bottom: 2vh;
+}
+
+.navbar-link {
+    padding: 20px;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-left: 2px solid #61dafb;
+    border-right: 2px solid #61dafb;
+}
