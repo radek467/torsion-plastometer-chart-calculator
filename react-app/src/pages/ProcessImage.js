@@ -9,6 +9,7 @@ import {getTurnsPoints} from "../alghoritms/imageProcessing/getTurnsPoints";
 import {getResults} from "../alghoritms/imageProcessing/getChartsDeviations";
 import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 
+
 export const ProcessImage = () => {
     const [isImageCutterPopupOpen, setImageCutterPopupOpen] = useState(false);
     const [isCalculatorPopupOpen, setCalculatorPopupOpen] = useState(false);
@@ -19,6 +20,8 @@ export const ProcessImage = () => {
     const [momentChartDeviations, setMomentChartDeviations] = useState([]);
     const [strengthChartDeviations, setStrengthChartDeviations] = useState([]);
     const [onePxInMm, setOnePxInMm] = useState(0);
+    const [sigma, setSigma] = useState([]);
+    const [rand, setRand] = useState([]);
 
     const clearStatesRelatedWithProcessing = () => {
         setStrengthChartDeviations([]);
@@ -111,7 +114,13 @@ export const ProcessImage = () => {
                 {isCalculatorPopupOpen &&
                 <Popup
                     content={<ProcessImageCalculationDataContent momentChartDeviations={[...momentChartDeviations]}
-                                                                 strengthChartDeviations={[...strengthChartDeviations]}/>}
+                                                                 strengthChartDeviations={[...strengthChartDeviations]}
+                                                                 setSigma = {setSigma}
+                                                                 setRand = {setRand}
+                                                                 togglePopup = {toggleCalculatorPopup}
+
+
+                    />}
                     handleClose={toggleCalculatorPopup}
                 />
                 }
@@ -140,6 +149,20 @@ export const ProcessImage = () => {
                            className={'whole-picture'} style={{width: '30vh', height: '60vh'}}></Image>
                     <Image title={"initial"} src={turnsChart} alt={"fromCrop"}
                            className={'whole-picture'} style={{width: '1vh', height: '60vh'}}></Image>
+
+                    {console.log(sigma)}
+
+                    {(sigma === [] || rand === []) ? "" :
+                        <>
+                            <p style={{color: "white"}}>
+                                {"Deviations of left chart: " + sigma.join(", ")}
+                            </p>
+                            <p style={{color: "white"}}>
+                                {"random values: " + rand.join(", ")}
+                            </p>
+                        </>
+
+                    }
                 </>
             }
             </div>

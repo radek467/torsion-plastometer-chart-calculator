@@ -3,10 +3,11 @@ import DeviationResultTable from "./DeviationResultTable";
 
 import '../styles/calculationDataContent.css'
 import '../styles/mainStyles.css'
-import Button from "./Button";
+
+const RESULT_URL = "http://localhost:8080//app/processImage"
 
 
-const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChartDeviations}) => {
+const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChartDeviations, setSigma, setRand, togglePopup}) => {
     const [momentBridge, setMomentBridge] = useState(1);
     const [strengthBridge, setStrengthBridge] = useState(1);
     const [momentParameter, setMomentParameter] = useState(0);
@@ -26,22 +27,38 @@ const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChar
                     {createBridgeComboBox("strengthBridge", "Wzbudzenie mostka siły: ", setStrengthBridge)}
 
 
-                    {createParameterTextField("momentParameter", "Parametr siły: ", setMomentParameter)}
-                    {createParameterTextField("strengthParameter", "Parametr momentu: ", setStrengthParameter)}
+                    {createParameterTextField("momentParameter", "Parametr momentu: ", setMomentParameter)}
+                    {createParameterTextField("strengthParameter", "Parametr siły: ", setStrengthParameter)}
                     {createParameterTextFieldWithInitialValue("deformation", "Odkształcenie: ", deformation, setDeformation)}
 
                 </div>
             </div>
 
             <div className="confirmButtons">
-                <Button
-                    title="Oblicz"
-                    onClick={() => console.log("moment bridge: " + momentBridge + " strength bridge: " + strengthBridge)}
-                />
-                <Button
-                    title="Anuluj"
-                    onClick={() => console.log("moment parameter: " + momentParameter + " strength parameter: " + strengthParameter)}
-                />
+                <button
+                    className="button"
+                    // onClick={() => console.log("moment chart deviations: " + momentChartDeviations + " strength chart deviations: " + strengthChartDeviations)}>
+                    onClick={
+                        async () => {
+                            await sendDataToCalculate({
+                                momentChartDeviations,
+                                strengthChartDeviations,
+                                momentBridge,
+                                strengthBridge,
+                                momentParameter,
+                                strengthParameter,
+                                deformation
+                            })
+                            await getResult(setSigma, setRand);
+                            togglePopup();
+                        }}>
+                    Oblicz
+                </button>
+                <button
+                    className="button"
+                    onClick={togglePopup}>
+                    Anuluj
+                </button>
             </div>
         </>
     )
@@ -83,5 +100,29 @@ const createParameterTextFieldWithInitialValue = (id, title, value, setValue) =>
         </div>
     )
 }
+
+const sendDataToCalculate = (objectToSend) =>
+    fetch(RESULT_URL, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(objectToSend)
+    });
+
+
+const getResult = (setSigma, setRand) => {
+    fetch(RESULT_URL)
+        .then(response => response.json())
+        .then(data => {
+            setSigma(data.sigmap);
+            setRand(data.randomValue)
+        })
+}
+
 
 export default ProcessImageCalculationDataContent
