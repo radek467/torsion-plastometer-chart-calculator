@@ -1,111 +1,90 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-function generateDownload(canvas, crop) {
-  if (!crop || !canvas) {
-    return;
-  }
+export default function Cropper({image, setMomentChart, setStrengthChart, setTurnsChart}) {
+    const imgRef = useRef(null);
+    const previewCanvasRef = useRef(null);
+    const [crop, setCrop] = useState({unit: "%", width: 30});
+    const [completedCrop, setCompletedCrop] = useState(null);
 
-  canvas.toBlob(
-    (blob) => {
-      const previewUrl = window.URL.createObjectURL(blob);
+    const onLoad = useCallback((img) => {
+        imgRef.current = img;
+    }, []);
 
-      const anchor = document.createElement("a");
-      anchor.download = "cropPreview.png";
-      anchor.href = URL.createObjectURL(blob);
-      anchor.click();
+    useEffect(() => {
+        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+            return;
+        }
 
-      window.URL.revokeObjectURL(previewUrl);
-    },
-    "image/png",
-    1
-  );
+        const image = imgRef.current;
+        const canvas = previewCanvasRef.current;
+        const crop = completedCrop;
+
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        const ctx = canvas.getContext("2d");
+        const pixelRatio = 1;
+        canvas.width = crop.width * pixelRatio * scaleX;
+        canvas.height = crop.height * pixelRatio * scaleY;
+
+        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        ctx.imageSmoothingQuality = "high";
+
+        ctx.drawImage(
+            image,
+            crop.x * scaleX,
+            crop.y * scaleY,
+            crop.width * scaleX,
+            crop.height * scaleY,
+            0,
+            0,
+            crop.width * scaleX,
+            crop.height * scaleY
+        );
+    }, [completedCrop]);
+
+    return (
+        <div className="App">
+            <ReactCrop
+                imageStyle={{height: "500px"}}
+                src={image}
+                onImageLoaded={onLoad}
+                crop={crop}
+                onChange={(c) => setCrop(c)}
+                onComplete={(c) => setCompletedCrop(c)}
+            />
+            <div>
+                <canvas
+                    //todo investigate why ref is needed
+                    ref={previewCanvasRef}
+                    // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+                    style={{
+                        width: 0,
+                        height: 0
+                    }}
+                />
+            </div>
+
+            <div>
+                {createButton("Get moment chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setMomentChart))}
+                {createButton("Get strength chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setStrengthChart))}
+                {createButton("Get turns chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setTurnsChart))}
+            </div>
+        </div>
+    );
 }
 
-export default function Cropper({image, setImage}) {
-  const imgRef = useRef(null);
-  const previewCanvasRef = useRef(null);
-  const [crop, setCrop] = useState({ unit: "%", width: 30 });
-  const [completedCrop, setCompletedCrop] = useState(null);
-
-  const onLoad = useCallback((img) => {
-    imgRef.current = img;
-  }, []);
-
-  useEffect(() => {
-    if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
-      return;
-    }
-
-    const image = imgRef.current;
-    const canvas = previewCanvasRef.current;
-    const crop = completedCrop;
-
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext("2d");
-    const pixelRatio = window.devicePixelRatio;
-
-    canvas.width = crop.width * pixelRatio * scaleX;
-    canvas.height = crop.height * pixelRatio * scaleY;
-
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = "high";
-
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width * scaleX,
-      crop.height * scaleY
-    );
-  }, [completedCrop]);
-
-  return (
-    <div className="App">
-      {/* <div>
-        <input type="file" accept="image/*" onChange={onSelectFile} />
-      </div> */}
-      <ReactCrop
-        imageStyle={{height: "500px"}}
-        src={image}
-        onImageLoaded={onLoad}
-        crop={crop}
-        onChange={(c) => setCrop(c)}
-        onComplete={(c) => setCompletedCrop(c)}
-      />
-      <div>
-        <canvas
-          ref={previewCanvasRef}
-          // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-          style={{
-            width: Math.round(completedCrop?.width ?? 0),
-            height: Math.round(completedCrop?.height ?? 0)
-          }}
-        />
-      </div>
-      <button
-        type="button"
-        disabled={!completedCrop?.width || !completedCrop?.height}
-        onClick={() =>
-          getImage(previewCanvasRef.current, completedCrop, setImage)
-        }
-      >
-        Get crop
-      </button>
-    </div>
-  );
+const createButton = (name, isDisabled, onClickFunction) => {
+    return (
+        <button className="button" title={name} disabled={isDisabled} onClick={onClickFunction}>{name}</button>
+    )
 }
 
 
 function getImage(canvas, crop, setImage) {
     if (!crop || !canvas) {
-      return;
+        return;
     }
     setImage(canvas.toDataURL());
 }

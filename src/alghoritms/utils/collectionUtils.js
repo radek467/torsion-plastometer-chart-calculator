@@ -5,4 +5,9 @@ export function sortMapByValues(map) {
 
 export function incrementValue(map, key, incrementValue) {
     let incrementedValue = map.get(key) + incrementValue;
-    map.set(key, incrementedValue)}
+    map.set(key, incrementedValue)
+}
+
+export function isArrayEmpty(array) {
+    return array !== undefined && array !== null && array.length === 0;
+}

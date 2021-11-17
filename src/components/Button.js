@@ -1,9 +1,8 @@
 import React from 'react'
-import '../styles/mainPage.css'
-
-function Button(props) {
+import '../styles/mainStyles.css'
+const Button = (props) => {
     return (
-        <button onClick = {props.clickAction}>{props.title}</button>
+        <button  className="button" onClick = {props.clickAction} disabled = {props.disabled}>{props.title}</button>
     )
 }
 
