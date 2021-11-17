@@ -1,0 +1,47 @@
+.table {
+    width: 33%;
+    color: white;
+    margin-right: 80px;
+}
+
+.table-input {
+    border: 1px solid #61dafb;
+    border-radius: 5px;
+    background-color: #cccccc;
+    margin: 2px 5px;
+    padding: 3px 5px;
+    max-width: 100px;
+}
+
+.dataContent-calculationParameters {
+    text-align: left;
+
+}
+
+.calculationParameter {
+    margin: 8px 0;
+}
+
+.calculationParameters-oneInput {
+    max-width: 100px;
+    margin-right: 20px;
+    margin-left: 10px;
+    padding: 3px 5px;
+    border: 1px solid #61dafb;
+    border-radius: 5px;
+    background-color: #cccccc;
+}
+
+.calculationParameters-inputLabel {
+    color: white;
+}
+
+.confirmButtons {
+    margin: 20px auto;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}

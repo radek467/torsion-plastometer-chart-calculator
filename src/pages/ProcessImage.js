@@ -25,6 +25,7 @@ export const ProcessImage = () => {
         setMomentChartDeviations([]);
         setStrengthChart("");
         setMomentChart("");
+        setTurnsChart("");
     }
 
     const toggleCutterPopup = () => {
@@ -70,7 +71,6 @@ export const ProcessImage = () => {
         await getTurnsPoints(turnsChart).then(result => {
             turnsPoints = result;
         })
-        clearStatesRelatedWithProcessing()
 
         await getResults(chartsImages, onePxInMm, turnsPoints).then(
             result => {
@@ -85,14 +85,27 @@ export const ProcessImage = () => {
     return (
         <div className={'processImage-box'}>
             <div className={'processImage-buttonsBar'}>
-                <button onClick={toggleCutterPopup}>Załaduj wykresy</button>
-                <button onClick={getChartsDeviations}
-                        disabled={!isArrayEmpty(momentChartDeviations) || !isArrayEmpty(strengthChartDeviations)}>Oblicz
-                    wychylenia
+                <button
+                    className="button"
+                    onClick={() => {
+                        toggleCutterPopup();
+                        clearStatesRelatedWithProcessing()
+                    }
+                    }>Załaduj wykresy
                 </button>
-                <button onClick={toggleCalculatorPopup}
-                        disabled={isArrayEmpty(momentChartDeviations) || isArrayEmpty(strengthChartDeviations)}>Ustaw
-                    dane obliczeń
+
+                <button
+                    className="button"
+                    onClick={getChartsDeviations}
+                    disabled={!momentChart || !strengthChart || !turnsChart || !isArrayEmpty(momentChartDeviations) || !isArrayEmpty(strengthChartDeviations)}
+                >Oblicz wychylenia
+                </button>
+
+                <button
+                    className="button"
+                    onClick={toggleCalculatorPopup}
+                    disabled={isArrayEmpty(momentChartDeviations) || isArrayEmpty(strengthChartDeviations)}
+                >Ustaw dane obliczeń
                 </button>
 
                 {isCalculatorPopupOpen &&
@@ -130,7 +143,6 @@ export const ProcessImage = () => {
                 </>
             }
             </div>
-
         </div>
     )
 }

@@ -24,8 +24,7 @@ export default function Cropper({image, setMomentChart, setStrengthChart, setTur
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
         const ctx = canvas.getContext("2d");
-        const pixelRatio = window.devicePixelRatio;
-
+        const pixelRatio = 1;
         canvas.width = crop.width * pixelRatio * scaleX;
         canvas.height = crop.height * pixelRatio * scaleY;
 
@@ -78,7 +77,7 @@ export default function Cropper({image, setMomentChart, setStrengthChart, setTur
 
 const createButton = (name, isDisabled, onClickFunction) => {
     return (
-        <button type="button" disabled={isDisabled} onClick={onClickFunction}>{name}</button>
+        <button className="button" title={name} disabled={isDisabled} onClick={onClickFunction}>{name}</button>
     )
 }
 
