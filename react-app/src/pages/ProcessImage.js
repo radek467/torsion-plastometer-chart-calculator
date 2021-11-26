@@ -9,6 +9,9 @@ import {getTurnsPoints} from "../alghoritms/imageProcessing/getTurnsPoints";
 import {getResults} from "../alghoritms/imageProcessing/getChartsDeviations";
 import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 
+import ResultPresentation from "../components/ResultPresentation"
+import "../styles/processImage.css"
+
 
 export const ProcessImage = () => {
     const [isImageCutterPopupOpen, setImageCutterPopupOpen] = useState(false);
@@ -29,6 +32,8 @@ export const ProcessImage = () => {
         setStrengthChart("");
         setMomentChart("");
         setTurnsChart("");
+        setSigma([])
+        setRand([])
     }
 
     const toggleCutterPopup = () => {
@@ -115,9 +120,9 @@ export const ProcessImage = () => {
                 <Popup
                     content={<ProcessImageCalculationDataContent momentChartDeviations={[...momentChartDeviations]}
                                                                  strengthChartDeviations={[...strengthChartDeviations]}
-                                                                 setSigma = {setSigma}
-                                                                 setRand = {setRand}
-                                                                 togglePopup = {toggleCalculatorPopup}
+                                                                 setSigma={setSigma}
+                                                                 setRand={setRand}
+                                                                 togglePopup={toggleCalculatorPopup}
 
 
                     />}
@@ -141,30 +146,24 @@ export const ProcessImage = () => {
                     handleClose={toggleCutterPopup}
                 />}
             </div>
-            <div>{(!momentChart && !strengthChart && !turnsChart) ? "" :
+            <div className="processImageContent">{(!momentChart && !strengthChart && !turnsChart) ? "" :
                 <>
-                    <Image title={"initial"} src={momentChart} alt={"fromCrop"}
-                           className={'whole-picture'} style={{with: '13vh', height: '60vh'}}></Image>
-                    <Image title={"initial"} src={strengthChart} alt={"fromCrop"}
-                           className={'whole-picture'} style={{width: '30vh', height: '60vh'}}></Image>
-                    <Image title={"initial"} src={turnsChart} alt={"fromCrop"}
-                           className={'whole-picture'} style={{width: '1vh', height: '60vh'}}></Image>
+                    <div className="processImageComponent">
+                        {(sigma === [] || rand === []) ? "" :
+                            <ResultPresentation sigma={sigma} random={rand}/>}
+                    </div>
 
-                    {console.log(sigma)}
-
-                    {(sigma === [] || rand === []) ? "" :
-                        <>
-                            <p style={{color: "white"}}>
-                                {"Deviations of left chart: " + sigma.join(", ")}
-                            </p>
-                            <p style={{color: "white"}}>
-                                {"random values: " + rand.join(", ")}
-                            </p>
-                        </>
-
-                    }
+                    <div className="processImageComponent">
+                        <Image title={"initial"} src={momentChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{with: '13vh', height: '60vh'}}></Image>
+                        <Image title={"initial"} src={strengthChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{width: '30vh', height: '60vh'}}></Image>
+                        <Image title={"initial"} src={turnsChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{width: '1vh', height: '60vh'}}></Image>
+                    </div>
                 </>
             }
+
             </div>
         </div>
     )

@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 //@Component
-public class ProcessImageDataModel {
+public class ProcessChartDataModel {
 //    private double [] momentChartDeviations;
 //    private double [] strengthChartDeviations;
 //    private double [] sigmap;

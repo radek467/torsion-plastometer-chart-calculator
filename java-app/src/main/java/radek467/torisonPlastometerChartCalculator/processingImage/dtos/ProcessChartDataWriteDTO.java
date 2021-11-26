@@ -1,17 +1,16 @@
-package radek467.torisonPlastometerChartCalculator.processingImage;
+package radek467.torisonPlastometerChartCalculator.processingImage.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
+import radek467.torisonPlastometerChartCalculator.processingImage.ProcessChartDataModel;
 
 import java.util.List;
 
 @Setter
 @AllArgsConstructor
 @Builder
-public class ProcessImageDataWriteDTO {
+public class ProcessChartDataWriteDTO {
 
     private List<Double> momentChartDeviations;
     private List<Double> strengthChartDeviations;
@@ -21,8 +20,8 @@ public class ProcessImageDataWriteDTO {
     private double momentParameter;
     private double deformation;
 
-    public ProcessImageDataModel createWriteModel() {
-        return ProcessImageDataModel.builder()
+    public ProcessChartDataModel createWriteModel() {
+        return ProcessChartDataModel.builder()
                 .deformation(deformation)
                 .momentBridge(momentBridge)
                 .momentParameter(momentParameter)

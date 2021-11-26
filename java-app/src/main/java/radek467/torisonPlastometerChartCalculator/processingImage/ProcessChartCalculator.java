@@ -1,16 +1,18 @@
 package radek467.torisonPlastometerChartCalculator.processingImage;
 
 import org.springframework.stereotype.Service;
+import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessChartDataReadDTO;
+import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessChartDataWriteDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProcessImageService {
-    private ProcessImageDataModel calculatedImage;
+public class ProcessChartCalculator {
+    private ProcessChartDataModel calculatedImage;
 
-    public void setCalculationData(ProcessImageDataWriteDTO model) {
+    public void setCalculationData(ProcessChartDataWriteDTO model) {
         calculatedImage = model.createWriteModel();
     }
 
@@ -58,15 +60,15 @@ public class ProcessImageService {
     }
 
 
-    public ProcessImageDataReadDTO getProcessedData() {
-        ProcessImageDataReadDTO processedData = new ProcessImageDataReadDTO(calculatedImage);
+    public ProcessChartDataReadDTO getProcessedData() {
+        ProcessChartDataReadDTO processedData = new ProcessChartDataReadDTO(calculatedImage);
         if(isCalculatedDataEmpty(processedData)){
             throw new IllegalStateException("Calculation went wrong");
         }
         return processedData;
     }
 
-    private boolean isCalculatedDataEmpty(ProcessImageDataReadDTO processedData) {
+    private boolean isCalculatedDataEmpty(ProcessChartDataReadDTO processedData) {
         return processedData.getRandomValue().isEmpty() || processedData.getSigmap().isEmpty();
     }
 }

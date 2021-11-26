@@ -2,11 +2,6 @@ package radek467.torisonPlastometerChartCalculator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import radek467.torisonPlastometerChartCalculator.processingImage.ProcessImageDataReadDTO;
-import radek467.torisonPlastometerChartCalculator.processingImage.ProcessImageDataWriteDTO;
-import radek467.torisonPlastometerChartCalculator.processingImage.ProcessImageService;
-
-import java.util.List;
 
 @SpringBootApplication
 public class TorisonPlastometerChartCalculatorApplication {
@@ -23,7 +18,7 @@ public class TorisonPlastometerChartCalculatorApplication {
 //		double deformation = 0.218;
 
 //		ProcessImageDataWriteDTO writeDTO = new ProcessImageDataWriteDTO(momentChartDeviations, strengthChartDeviations, momentBridge, strengthBridge, strengthParameter, momentParameter, deformation);
-//		ProcessImageService service = new ProcessImageService();
+//		ProcessChartCalculator service = new ProcessChartCalculator();
 //		service.setCalculationData(writeDTO);
 //		service.doCalculations();
 //		ProcessImageDataReadDTO processedData = service.getProcessedData();

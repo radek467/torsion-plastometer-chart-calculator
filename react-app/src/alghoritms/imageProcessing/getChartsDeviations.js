@@ -41,9 +41,9 @@ async function getChartDeviationsInMm(imageToProcess, points, onePxInMm) {
         //find start of chart
         .then((image) => {
             let toCheck = -1;
-            return image.scan(0, Math.max(...startTurningPoints) + differenceBetweenPoints * 2 - 2, image.bitmap.width, Math.max(...startTurningPoints) + differenceBetweenPoints * 2 + 2, (x, y, idx) => {
+            return image.scan(0, image.bitmap.height - 2, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
                     const thisColor = getImageRgba(image, idx);
-                    if (isDistanceBetweenColorsLessThenThreshold(thisColor, BLACK_RGBA, 10) && y == Math.max(...startTurningPoints) + differenceBetweenPoints * 2 && startOfTurns < 0) {
+                    if (isDistanceBetweenColorsLessThenThreshold(thisColor, BLACK_RGBA, 10) && startOfTurns < 0) {
                         startOfTurns = x;
                         toCheck = y;
                     }
