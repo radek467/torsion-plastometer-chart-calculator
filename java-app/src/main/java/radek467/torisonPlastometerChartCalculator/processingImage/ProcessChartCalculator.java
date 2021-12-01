@@ -11,6 +11,13 @@ import java.util.stream.Collectors;
 @Service
 public class ProcessChartCalculator {
     private ProcessChartDataModel calculatedImage;
+    private ImageRepository imageRepository;
+    private ResultRepository resultRepository;
+
+    public ProcessChartCalculator( ImageRepository imageRepository, ResultRepository resultRepository) {
+        this.imageRepository = imageRepository;
+        this.resultRepository = resultRepository;
+    }
 
     public void setCalculationData(ProcessChartDataWriteDTO model) {
         calculatedImage = model.createWriteModel();
@@ -59,6 +66,15 @@ public class ProcessChartCalculator {
         return sigmaResults;
     }
 
+    public void saveProcessedData() {
+        Image image = new Image();
+        Image savedImage = imageRepository.save(image);
+        ProcessChartDataReadDTO processedData = getProcessedData();
+        List<Result> savedResults = new ArrayList<>();
+        for(int i = 0; i < processedData.getSigmap().size(); i++) {
+            savedResults.add(resultRepository.save(new Result(i, processedData.getSigmap().get(i), processedData.getRandomValue().get(i), savedImage)));
+        }
+    }
 
     public ProcessChartDataReadDTO getProcessedData() {
         ProcessChartDataReadDTO processedData = new ProcessChartDataReadDTO(calculatedImage);

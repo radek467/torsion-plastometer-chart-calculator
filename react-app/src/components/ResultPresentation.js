@@ -7,12 +7,12 @@ import image from '../assets/images/foto.png'
 import "../styles/resultPresentation.css"
 
 
-const ResultPresentation = ({sigma, random}) => {
+const ResultPresentation = ({sigma, random, classNames}) => {
     const tableContent = createTableContent(sigma, random)
 
     return (
         <>
-            <table className="resultTable float-left">
+            <table className={classNames}>
                 <tbody>
                 {tableContent}
                 </tbody>
@@ -24,6 +24,7 @@ const ResultPresentation = ({sigma, random}) => {
 const createTableContent = (sigma, random) => {
     const tableContent = [];
 
+    console.log(random)
     tableContent.push(
         <tr className="resultTableRow">
             <td className="resultTableCell"><p>L.p</p></td>

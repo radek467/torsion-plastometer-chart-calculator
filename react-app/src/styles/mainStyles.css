@@ -12,3 +12,16 @@
     background: #aaaaaa;
     cursor: pointer;
 }
+.fontSize-10 {
+    font-size: 10px;
+}
+
+.floatLeft{
+    float: left;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}

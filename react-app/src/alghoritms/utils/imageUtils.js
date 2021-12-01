@@ -30,6 +30,18 @@ export function createLineBetweenTwoPoints(image, x1, y1, x2, y2){
     return image
 }
 
+export function b64toBlob(dataURI) {
+
+    const byteString = atob(dataURI.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/jpeg' });
+}
+
 const getColorDistanceBetweenTwoColors = (c1, c2) => {
     return Math.sqrt(Math.pow(c1.r - c2.r, 2) + Math.pow(c1.g - c2.g, 2) + Math.pow(c1.b - c2.b, 2) + Math.pow(c1.a - c2.a, 2));
 }

@@ -12,6 +12,8 @@ import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
 
+const RESULT_SAVE_URL = "http://localhost:8080//app/processImage/save"
+
 
 export const ProcessImage = () => {
     const [isImageCutterPopupOpen, setImageCutterPopupOpen] = useState(false);
@@ -42,6 +44,53 @@ export const ProcessImage = () => {
 
     const toggleCalculatorPopup = () => {
         setCalculatorPopupOpen(!isCalculatorPopupOpen);
+    }
+
+    const exportData = () => {
+        fetch("http://localhost:8080//app/processImage/fakeExport")
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(
+                    new Blob([blob])
+                )
+                const a = document.createElement("a");
+                a.href = url;
+                a.setAttribute("download", "result.csv");
+                a.click()
+            })
+    }
+
+    const saveData = () => {
+        const generateChartPoints = [];
+        for(let i = 1; i <= sigma.length; i++) {
+            generateChartPoints.push(i);
+        }
+
+        let fd = new FormData();
+        // fd.append("chart", b64toBlob(initialImage), "chart.png");
+
+        const createObjectToSend = {
+            imageData: initialImage,
+            name: "XDtest",
+            chartPoints: generateChartPoints,
+            sigmas: sigma,
+            gColumns: rand
+        }
+
+        console.log(createObjectToSend)
+
+
+        fetch(RESULT_SAVE_URL, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(createObjectToSend)
+        });
     }
 
     const loadImage = (e) => {
@@ -115,6 +164,18 @@ export const ProcessImage = () => {
                     disabled={isArrayEmpty(momentChartDeviations) || isArrayEmpty(strengthChartDeviations)}
                 >Ustaw dane obliczeń
                 </button>
+                <button
+                    className="button"
+                    onClick={exportData}
+                    disabled={isArrayEmpty(sigma) || isArrayEmpty(rand)}
+                >Eksportuj
+                </button>
+                <button
+                    className="button"
+                    onClick={saveData}
+                    disabled={isArrayEmpty(sigma) || isArrayEmpty(rand)}
+                >Zapisz
+                </button>
 
                 {isCalculatorPopupOpen &&
                 <Popup
@@ -150,7 +211,7 @@ export const ProcessImage = () => {
                 <>
                     <div className="processImageComponent">
                         {(sigma === [] || rand === []) ? "" :
-                            <ResultPresentation sigma={sigma} random={rand}/>}
+                            <ResultPresentation sigma={sigma} random={rand} classNames={"resultTable float-left"}/>}
                     </div>
 
                     <div className="processImageComponent">
