@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import radek467.torisonPlastometerChartCalculator.processingImage.Image;
-import radek467.torisonPlastometerChartCalculator.processingImage.Result;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.Image;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.Result;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ImageWithResultWriteDTO {
     private byte [] imageData;
     private List<Double> chartPoints;
     private List<Double> sigmas;
-    private List<Double> gColumns;
+    private List<Double> alternativeDeformations;
 
     public Image createImageToSave() {
         return Image.builder()
@@ -34,7 +34,7 @@ public class ImageWithResultWriteDTO {
             Result result = Result.builder()
                     .chartPoint(chartPoints.get(i))
                     .sigma(sigmas.get(i))
-                    .gColumn(gColumns.get(i))
+                    .alternativeDeformations(alternativeDeformations.get(i))
                     .image(image)
                     .build();
             results.add(result);

@@ -1,4 +1,4 @@
-package radek467.torisonPlastometerChartCalculator.processingImage;
+package radek467.torisonPlastometerChartCalculator.processingImage.model;
 
 import lombok.*;
 

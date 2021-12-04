@@ -1,35 +1,29 @@
 package radek467.torisonPlastometerChartCalculator.processingImage;
 
-import org.springframework.stereotype.Service;
-import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessChartDataReadDTO;
-import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessChartDataWriteDTO;
+import lombok.NoArgsConstructor;
+import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessingChartCalculationResult;
+import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessingChartCalculationData;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.ProcessChartCalculationDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@NoArgsConstructor
 public class ProcessChartCalculator {
-    private ProcessChartDataModel calculatedImage;
-    private ImageRepository imageRepository;
-    private ResultRepository resultRepository;
+    private ProcessChartCalculationDataModel calculationDataModel;
 
-    public ProcessChartCalculator( ImageRepository imageRepository, ResultRepository resultRepository) {
-        this.imageRepository = imageRepository;
-        this.resultRepository = resultRepository;
-    }
-
-    public void setCalculationData(ProcessChartDataWriteDTO model) {
-        calculatedImage = model.createWriteModel();
+    public void setCalculationData(ProcessingChartCalculationData model) {
+        calculationDataModel = model.createWriteModel();
     }
 
     public void doCalculations() {
-        List<Double> momentsInNm = calculateDeviationsToNm(calculatedImage.getMomentChartDeviations(), calculatedImage.getMomentParameter());
-        List<Double> strengthsInNm = calculateDeviationsToNm(calculatedImage.getStrengthChartDeviations(), calculatedImage.getStrengthParameter());
-        calculatedImage.setRandomValueFromFColumn(calculateRandomValueFromFColumn());
-        calculatedImage.setRandomValueFromGColumn(calculateRandomValueFromGColumn());
+        List<Double> momentsInNm = calculateDeviationsToNm(calculationDataModel.getMomentChartDeviations(), calculationDataModel.getMomentParameter());
+        List<Double> strengthsInNm = calculateDeviationsToNm(calculationDataModel.getStrengthChartDeviations(), calculationDataModel.getStrengthParameter());
+        calculationDataModel.setDeformationForEachChartPoint(calculateRandomValueFromFColumn());
+        calculationDataModel.setAlternativeDeformation(calculateRandomValueFromGColumn());
         List<Double> sigmaResults = calculateSigma(momentsInNm, strengthsInNm);
-        calculatedImage.setSigmap(sigmaResults);
+        calculationDataModel.setSigmap(sigmaResults);
     }
 
     private List<Double> calculateDeviationsToNm(List<Double> chartDeviationsInMm, double parameter) {
@@ -40,16 +34,21 @@ public class ProcessChartCalculator {
     }
 
     private List<Double> calculateRandomValueFromFColumn() {
-        calculatedImage.setRandomValueFromFColumn(List.of(0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0));
-        return calculatedImage.getRandomValueFromFColumn()
+        List<Double> list = new ArrayList<>();
+        list.add(0.5);
+        for(int i = 1; i < calculationDataModel.getMomentChartDeviations().size(); i++){
+            list.add((double) i);
+        }
+        calculationDataModel.setDeformationForEachChartPoint(list);
+        return calculationDataModel.getDeformationForEachChartPoint()
                 .stream()
-                .map(value -> value * calculatedImage.getDeformation())
+                .map(value -> value * calculationDataModel.getDeformation())
                 .collect(Collectors.toList());
     }
 
     private List<Double> calculateRandomValueFromGColumn() {
-        double subtrahend = calculatedImage.getRandomValueFromFColumn().get(0);
-        return calculatedImage.getRandomValueFromFColumn()
+        double subtrahend = calculationDataModel.getDeformationForEachChartPoint().get(0);
+        return calculationDataModel.getDeformationForEachChartPoint()
                 .stream()
                 .map(value -> value - subtrahend)
                 .collect(Collectors.toList());
@@ -66,25 +65,15 @@ public class ProcessChartCalculator {
         return sigmaResults;
     }
 
-    public void saveProcessedData() {
-        Image image = new Image();
-        Image savedImage = imageRepository.save(image);
-        ProcessChartDataReadDTO processedData = getProcessedData();
-        List<Result> savedResults = new ArrayList<>();
-        for(int i = 0; i < processedData.getSigmap().size(); i++) {
-            savedResults.add(resultRepository.save(new Result(i, processedData.getSigmap().get(i), processedData.getRandomValue().get(i), savedImage)));
-        }
-    }
-
-    public ProcessChartDataReadDTO getProcessedData() {
-        ProcessChartDataReadDTO processedData = new ProcessChartDataReadDTO(calculatedImage);
+    public ProcessingChartCalculationResult getProcessedData() {
+        ProcessingChartCalculationResult processedData = new ProcessingChartCalculationResult(calculationDataModel);
         if(isCalculatedDataEmpty(processedData)){
             throw new IllegalStateException("Calculation went wrong");
         }
         return processedData;
     }
 
-    private boolean isCalculatedDataEmpty(ProcessChartDataReadDTO processedData) {
-        return processedData.getRandomValue().isEmpty() || processedData.getSigmap().isEmpty();
+    private boolean isCalculatedDataEmpty(ProcessingChartCalculationResult processedData) {
+        return processedData.getAlternativeDeformations().isEmpty() || processedData.getSigmap().isEmpty();
     }
 }

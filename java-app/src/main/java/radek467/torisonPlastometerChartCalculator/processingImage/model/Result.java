@@ -1,4 +1,4 @@
-package radek467.torisonPlastometerChartCalculator.processingImage;
+package radek467.torisonPlastometerChartCalculator.processingImage.model;
 
 import lombok.*;
 
@@ -16,16 +16,16 @@ public class Result {
     private Long id;
     private double chartPoint;
     private double sigma;
-    private double gColumn;
+    private double alternativeDeformations;
 
     @ManyToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
-    public Result(double chartPoint, double sigma, double gColumn, Image image) {
+    public Result(double chartPoint, double sigma, double alternativeDeformations, Image image) {
         this.chartPoint = chartPoint;
         this.sigma = sigma;
-        this.gColumn = gColumn;
+        this.alternativeDeformations = alternativeDeformations;
         this.image = image;
     }
 }

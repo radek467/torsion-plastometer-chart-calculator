@@ -7,7 +7,7 @@ import '../styles/mainStyles.css'
 const RESULT_URL = "http://localhost:8080//app/processImage"
 
 
-const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChartDeviations, setSigma, setRand, togglePopup}) => {
+const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChartDeviations, setSigma, setAlternativeDeformations, togglePopup}) => {
     const [momentBridge, setMomentBridge] = useState(1);
     const [strengthBridge, setStrengthBridge] = useState(1);
     const [momentParameter, setMomentParameter] = useState(0);
@@ -49,7 +49,7 @@ const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChar
                                 strengthParameter,
                                 deformation
                             })
-                            await getResult(setSigma, setRand);
+                            await getResult(setSigma, setAlternativeDeformations);
                             togglePopup();
                         }}>
                     Oblicz
@@ -115,12 +115,12 @@ const sendDataToCalculate = (objectToSend) =>
     });
 
 
-const getResult = (setSigma, setRand) => {
+const getResult = (setSigma, setAlternativeDeformations) => {
     fetch(RESULT_URL)
         .then(response => response.json())
         .then(data => {
             setSigma(data.sigmap);
-            setRand(data.randomValue)
+            setAlternativeDeformations(data.alternativeDeformations)
         })
 }
 

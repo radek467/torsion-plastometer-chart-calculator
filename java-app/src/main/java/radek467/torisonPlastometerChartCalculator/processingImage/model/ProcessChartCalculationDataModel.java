@@ -1,4 +1,4 @@
-package radek467.torisonPlastometerChartCalculator.processingImage;
+package radek467.torisonPlastometerChartCalculator.processingImage.model;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -11,19 +11,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Component
-public class ProcessChartDataModel {
-//    private double [] momentChartDeviations;
-//    private double [] strengthChartDeviations;
-//    private double [] sigmap;
-//    //todo has to be renamed
-//    private double [] randomValue;
+public class ProcessChartCalculationDataModel {
     private List<Double> momentChartDeviations;
     private List<Double> strengthChartDeviations;
     private List<Double> sigmap;
-    //todo has to be renamed
-    private List<Double> randomValueFromFColumn;
-    private List<Double> randomValueFromGColumn;
+    private List<Double> deformationForEachChartPoint;
+    private List<Double> alternativeDeformation;
     private int momentBridge;
     private int strengthBridge;
     private double strengthParameter;

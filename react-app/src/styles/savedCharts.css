@@ -5,10 +5,36 @@
     width: 100%;
 }
 
+.imageResultTable {
+    border: 1px solid #61dafb;
+    border-bottom: none;
+    border-radius: 5px;
+    margin-left: 50px;
+}
+
 .results {
+    text-align: left;
     max-height: 25vh;
     margin-top: 20px;
-    width: 100%;
+    margin-left: 100px;
+    width: 70%;
     padding: 20px;
+}
+
+.resultCell {
+    max-height: 50px;
+    padding-left: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-bottom: 2px solid #61dafb;
+    width: 33px;
+}
+
+.savedImage {
+    max-height: 30vh;
+}
+
+.tableRow {
+    /*padding-bottom: 10px;*/
+    /*margin-top: 10px;*/
 }

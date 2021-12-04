@@ -1,28 +1,41 @@
-package radek467.torisonPlastometerChartCalculator.processingImage;
+package radek467.torisonPlastometerChartCalculator.processingImage.service.implementation;
 
 import org.springframework.stereotype.Service;
 import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ImageWithResultReadDTO;
 import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ImageWithResultWriteDTO;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.Image;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.Result;
+import radek467.torisonPlastometerChartCalculator.processingImage.repository.ImageRepository;
+import radek467.torisonPlastometerChartCalculator.processingImage.repository.ResultRepository;
+import radek467.torisonPlastometerChartCalculator.processingImage.service.ImageResultService;
 
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Base64.Decoder;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class ProcessImageService {
+class ImageResultServiceImpl implements ImageResultService {
     private final ImageRepository imageRepository;
     private final ResultRepository resultRepository;
 
-    public ProcessImageService(ImageRepository imageRepository, ResultRepository resultRepository) {
+    public ImageResultServiceImpl(ImageRepository imageRepository, ResultRepository resultRepository) {
         this.imageRepository = imageRepository;
         this.resultRepository = resultRepository;
     }
 
-    List<ImageWithResultReadDTO> getImagesWithResults() {
-        List<Image> images = imageRepository.findAll();
+    @Override
+    public void saveImageWithResults(ImageWithResultWriteDTO imageWithResultWriteDTO) {
+        Image image = imageWithResultWriteDTO.createImageToSave();
+        Image savedImage = imageRepository.save(image);
+
+        List<Result> resultsFromArrays = imageWithResultWriteDTO.createResultsFromArrays(savedImage);
+        resultRepository.saveAll(resultsFromArrays);
+    }
+
+    @Override
+    public List<ImageWithResultReadDTO> getImagesWithResults() {
+        List<Image> images = imageRepository.findAll().stream().filter(image -> image.getImageData() != null).collect(Collectors.toList());
         Iterable<Result> resultsToImages = findResultsToImages(images);
         return images
                 .stream()
@@ -31,10 +44,6 @@ public class ProcessImageService {
     }
 
     private Iterable<Result> findResultsToImages(List<Image> images) {
-//        List<Long> imagesIds = images
-//                .stream()
-//                .map(Image::getId)
-//                .collect(Collectors.toList());
         return resultRepository.findAll();
     }
 
@@ -45,11 +54,11 @@ public class ProcessImageService {
                 .collect(Collectors.toList());
         return ImageWithResultReadDTO
                 .builder()
-                .imageData(encodeBytesImageArray(image.getImageData()))
+                .imageURL(encodeBytesImageArray(image.getImageData()))
                 .name(image.getName())
                 .chartPoints(getChartPointsForImage(imageResults))
                 .sigmas(getSigmasForImage(imageResults))
-                .gColumns(getGColumnsForImage(imageResults))
+                .alternativeDeformations(getGColumnsForImage(imageResults))
                 .build();
     }
 
@@ -70,32 +79,15 @@ public class ProcessImageService {
     private List<Double> getGColumnsForImage(List<Result> imageResults) {
         return imageResults
                 .stream()
-                .map(Result::getGColumn)
+                .map(Result::getAlternativeDeformations)
                 .collect(Collectors.toList());
     }
 
-    String encodeBytesImageArray(byte [] imageBytes) {
+    String encodeBytesImageArray(byte[] imageBytes) {
         Base64.Encoder encoder = Base64.getEncoder();
         String imageInString = encoder.encodeToString(imageBytes);
         imageInString = "data:image/png;base64," + imageInString;
         return imageInString;
     }
 
-//    String getImages() {
-//        byte[] bytes = imageRepository.findAll().stream().map(Image::getImageData).findFirst().orElseThrow();
-//        Base64.Encoder encoder = Base64.getEncoder();
-//        String str = encoder.encodeToString(bytes);
-//        str = "data:image/png;base64," + str;
-//        return str;
-//    }
-
-    void saveImageWithResults(ImageWithResultWriteDTO imageWithResultWriteDTO) {
-        Image image = imageWithResultWriteDTO.createImageToSave();
-        Image savedImage = imageRepository.save(image);
-
-        List<Result> savedResults = new ArrayList<>();
-            List<Result> resultsFromArrays = imageWithResultWriteDTO.createResultsFromArrays(savedImage);
-            resultRepository.saveAll(resultsFromArrays);
-
-    }
 }

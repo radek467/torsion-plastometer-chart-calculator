@@ -48,7 +48,7 @@ async function getChartDeviationsInMm(imageToProcess, points, onePxInMm) {
                         toCheck = y;
                     }
 
-                    if (x - startOfTurns <= 40 && toCheck == y) {
+                    if (x - startOfTurns <= 40 && toCheck === y) {
                         image.setPixelColor(Jimp.rgbaToInt(255, 138, 5, 255), x, toCheck);
                     }
                 }
@@ -75,7 +75,7 @@ const getPixelChartDeviations = (image) => {
     let counterToDecreaseImageYWhenChartPointToTurningNotFound = 2;
 
     image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
-            const thisColor = image.getPixelColor(x, y);
+            let thisColor = Jimp.intToRGBA(image.getPixelColor(x, y));
             if (isBeginningOfChartOnTurnHeight(x, y)) {
                 doesDeviationFoundForBlackPoint = false;
                 doesDeviationShouldBeGetForCurrentYValue = true;
@@ -88,7 +88,7 @@ const getPixelChartDeviations = (image) => {
                 chartPointsForFoundTurns.push(x);
             }
 
-            //mark turns points by grey line
+            //mark turns points by green line
             if (startTurningPoints.includes(y) && doesDeviationShouldBeGetForCurrentYValue === true) {
                 image.setPixelColor(Jimp.rgbaToInt(0, 255, 0, 255), x, y);
             }
@@ -108,7 +108,7 @@ const getPixelChartDeviations = (image) => {
                 if (isDeviationPointForNotTurnHeight(color, doesDeviationShouldBeGetForCurrentYValue)) {
                     doesDeviationShouldBeGetForCurrentYValue = false;
                     doesDeviationFoundForBlackPoint = true;
-                    image = markChart(image, x, y);
+                    image = markChart(image, x, y - counterToDecreaseImageYWhenChartPointToTurningNotFound);
                     chartPointsForFoundTurns.push(x);
                 }
 

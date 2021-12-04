@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import Image from "../components/Image";
 import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 import ResultPresentation from "../components/ResultPresentation";
 
 import '../styles/savedCharts.css'
 import '../styles/mainStyles.css'
 
-const RESULT_URL = "http://localhost:8080//app/processImage/getImage"
+const RESULT_URL = "http://localhost:8080//app/results"
 
 export const SavedCharts = () => {
 
@@ -29,7 +28,6 @@ export const SavedCharts = () => {
 }
 
 const createImagesVisualisations = (images) => {
-    // console.log(images)
     if (isArrayEmpty(images)) {
         console.log("empty")
         return <></>
@@ -38,9 +36,8 @@ const createImagesVisualisations = (images) => {
         console.log(image)
         return (
             <tr>
-                <td>{<ResultPresentation sigma={image.sigmas} random={image.gcolumns} classNames={"resultTable float-left fontSize-10"}/>}</td>
-                <td><Image title={"initial"} src={image.imageData} alt={"fromCrop"}
-                                                       className={'whole-picture'} style={{with: '13vh', height: '40vh'}}/></td>
+                <td className={"resultCell"}>{<ResultPresentation sigma={image.sigmas} alternativeDeformations={image.alternativeDeformations} classNames={"imageResultTable float-left fontSize-10"}/>}</td>
+                <td className={"resultCell"}><img src={image.imageURL} className={"savedImage"}/></td>
             </tr>
         )
     });

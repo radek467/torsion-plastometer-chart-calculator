@@ -1,14 +1,12 @@
-import React, {Component} from 'react';
-import ReactCrop from 'react-image-crop';
+import React from 'react';
 import 'react-image-crop/dist/ReactCrop.css';
 import '../styles/mainPage.css'
-import image from '../assets/images/foto.png'
 
 import "../styles/resultPresentation.css"
 
 
-const ResultPresentation = ({sigma, random, classNames}) => {
-    const tableContent = createTableContent(sigma, random)
+const ResultPresentation = ({sigma, alternativeDeformations, classNames}) => {
+    const tableContent = createTableContent(sigma, alternativeDeformations)
 
     return (
         <>
@@ -21,24 +19,25 @@ const ResultPresentation = ({sigma, random, classNames}) => {
     )
 }
 
-const createTableContent = (sigma, random) => {
+const createTableContent = (sigma, alternativeDeformations) => {
     const tableContent = [];
+    console.log(sigma)
+    console.log(alternativeDeformations)
 
-    console.log(random)
     tableContent.push(
-        <tr className="resultTableRow">
+        <tr>
             <td className="resultTableCell"><p>L.p</p></td>
             <td className="resultTableCell"><p>Sigma</p></td>
             <td className="resultTableCell">Random</td>
         </tr>
     )
 
-    for(let i = 0; i < sigma.length || i < random.length; i++) {
+    for(let i = 0; i < sigma.length || i < alternativeDeformations.length; i++) {
         tableContent.push(
-            <tr className="resultTableRow">
+            <tr>
                 <td className="resultTableCell">{i +1 }</td>
                 <td className="resultTableCell">{parseFloat(sigma[i]).toFixed(3)}</td>
-                <td className="resultTableCell">{parseFloat(random[i]).toFixed(3)}</td>
+                <td className="resultTableCell">{parseFloat(alternativeDeformations[i]).toFixed(3)}</td>
             </tr>
         )
     }

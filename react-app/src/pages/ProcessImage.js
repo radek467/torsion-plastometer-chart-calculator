@@ -12,7 +12,7 @@ import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
 
-const RESULT_SAVE_URL = "http://localhost:8080//app/processImage/save"
+const RESULT_SAVE_URL = "http://localhost:8080//app/results/save"
 
 
 export const ProcessImage = () => {
@@ -26,7 +26,7 @@ export const ProcessImage = () => {
     const [strengthChartDeviations, setStrengthChartDeviations] = useState([]);
     const [onePxInMm, setOnePxInMm] = useState(0);
     const [sigma, setSigma] = useState([]);
-    const [rand, setRand] = useState([]);
+    const [alternativeDeformations, setAlternativeDeformations] = useState([]);
 
     const clearStatesRelatedWithProcessing = () => {
         setStrengthChartDeviations([]);
@@ -35,7 +35,7 @@ export const ProcessImage = () => {
         setMomentChart("");
         setTurnsChart("");
         setSigma([])
-        setRand([])
+        setAlternativeDeformations([])
     }
 
     const toggleCutterPopup = () => {
@@ -47,7 +47,7 @@ export const ProcessImage = () => {
     }
 
     const exportData = () => {
-        fetch("http://localhost:8080//app/processImage/fakeExport")
+        fetch("http://localhost:8080//app/processImage/export")
             .then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(
@@ -66,15 +66,12 @@ export const ProcessImage = () => {
             generateChartPoints.push(i);
         }
 
-        let fd = new FormData();
-        // fd.append("chart", b64toBlob(initialImage), "chart.png");
-
         const createObjectToSend = {
-            imageData: initialImage,
+            imageURL: initialImage,
             name: "XDtest",
             chartPoints: generateChartPoints,
             sigmas: sigma,
-            gColumns: rand
+            alternativeDeformations: alternativeDeformations
         }
 
         console.log(createObjectToSend)
@@ -167,13 +164,13 @@ export const ProcessImage = () => {
                 <button
                     className="button"
                     onClick={exportData}
-                    disabled={isArrayEmpty(sigma) || isArrayEmpty(rand)}
+                    disabled={isArrayEmpty(sigma) || isArrayEmpty(alternativeDeformations)}
                 >Eksportuj
                 </button>
                 <button
                     className="button"
                     onClick={saveData}
-                    disabled={isArrayEmpty(sigma) || isArrayEmpty(rand)}
+                    disabled={isArrayEmpty(sigma) || isArrayEmpty(alternativeDeformations)}
                 >Zapisz
                 </button>
 
@@ -182,7 +179,7 @@ export const ProcessImage = () => {
                     content={<ProcessImageCalculationDataContent momentChartDeviations={[...momentChartDeviations]}
                                                                  strengthChartDeviations={[...strengthChartDeviations]}
                                                                  setSigma={setSigma}
-                                                                 setRand={setRand}
+                                                                 setAlternativeDeformations={setAlternativeDeformations}
                                                                  togglePopup={toggleCalculatorPopup}
 
 
@@ -210,8 +207,8 @@ export const ProcessImage = () => {
             <div className="processImageContent">{(!momentChart && !strengthChart && !turnsChart) ? "" :
                 <>
                     <div className="processImageComponent">
-                        {(sigma === [] || rand === []) ? "" :
-                            <ResultPresentation sigma={sigma} random={rand} classNames={"resultTable float-left"}/>}
+                        {(sigma === [] || alternativeDeformations === []) ? "" :
+                            <ResultPresentation sigma={sigma} alternativeDeformations={alternativeDeformations} classNames={"resultTable float-left"}/>}
                     </div>
 
                     <div className="processImageComponent">

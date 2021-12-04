@@ -3,14 +3,14 @@ package radek467.torisonPlastometerChartCalculator.processingImage.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Setter;
-import radek467.torisonPlastometerChartCalculator.processingImage.ProcessChartDataModel;
+import radek467.torisonPlastometerChartCalculator.processingImage.model.ProcessChartCalculationDataModel;
 
 import java.util.List;
 
 @Setter
 @AllArgsConstructor
 @Builder
-public class ProcessChartDataWriteDTO {
+public class ProcessingChartCalculationData {
 
     private List<Double> momentChartDeviations;
     private List<Double> strengthChartDeviations;
@@ -20,8 +20,8 @@ public class ProcessChartDataWriteDTO {
     private double momentParameter;
     private double deformation;
 
-    public ProcessChartDataModel createWriteModel() {
-        return ProcessChartDataModel.builder()
+    public ProcessChartCalculationDataModel createWriteModel() {
+        return ProcessChartCalculationDataModel.builder()
                 .deformation(deformation)
                 .momentBridge(momentBridge)
                 .momentParameter(momentParameter)
