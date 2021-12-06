@@ -11,13 +11,15 @@ import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 
 import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
+import SaveImagePopupContent from "../components/SaveImagePopup";
 
-const RESULT_SAVE_URL = "http://localhost:8080//app/results/save"
+
 
 
 export const ProcessImage = () => {
     const [isImageCutterPopupOpen, setImageCutterPopupOpen] = useState(false);
     const [isCalculatorPopupOpen, setCalculatorPopupOpen] = useState(false);
+    const [isSaveImagePopupOpen, setSaveImagePopupOpen] = useState(false);
     const [initialImage, setInitialImage] = useState("");
     const [momentChart, setMomentChart] = useState("");
     const [strengthChart, setStrengthChart] = useState("");
@@ -46,6 +48,10 @@ export const ProcessImage = () => {
         setCalculatorPopupOpen(!isCalculatorPopupOpen);
     }
 
+    const toggleSavePopup = () => {
+        setSaveImagePopupOpen(!isSaveImagePopupOpen);
+    }
+
     const exportData = () => {
         fetch("http://localhost:8080//app/processImage/export")
             .then(response => response.blob())
@@ -61,33 +67,8 @@ export const ProcessImage = () => {
     }
 
     const saveData = () => {
-        const generateChartPoints = [];
-        for(let i = 1; i <= sigma.length; i++) {
-            generateChartPoints.push(i);
-        }
+        toggleSavePopup();
 
-        const createObjectToSend = {
-            imageURL: initialImage,
-            name: "XDtest",
-            chartPoints: generateChartPoints,
-            sigmas: sigma,
-            alternativeDeformations: alternativeDeformations
-        }
-
-        console.log(createObjectToSend)
-
-
-        fetch(RESULT_SAVE_URL, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(createObjectToSend)
-        });
     }
 
     const loadImage = (e) => {
@@ -169,7 +150,7 @@ export const ProcessImage = () => {
                 </button>
                 <button
                     className="button"
-                    onClick={saveData}
+                    onClick={toggleSavePopup}
                     disabled={isArrayEmpty(sigma) || isArrayEmpty(alternativeDeformations)}
                 >Zapisz
                 </button>
@@ -203,12 +184,22 @@ export const ProcessImage = () => {
                     }
                     handleClose={toggleCutterPopup}
                 />}
+                {isSaveImagePopupOpen &&
+                <Popup
+                    content={
+                        <>
+                            <SaveImagePopupContent initialImage={initialImage} sigma={sigma} alternativeDeformations={alternativeDeformations} handleClose={toggleSavePopup}/>
+                        </>
+                    }
+                    handleClose={toggleSavePopup}
+                />}
             </div>
             <div className="processImageContent">{(!momentChart && !strengthChart && !turnsChart) ? "" :
                 <>
                     <div className="processImageComponent">
                         {(sigma === [] || alternativeDeformations === []) ? "" :
-                            <ResultPresentation sigma={sigma} alternativeDeformations={alternativeDeformations} classNames={"resultTable float-left"}/>}
+                            <ResultPresentation sigma={sigma} alternativeDeformations={alternativeDeformations}
+                                                classNames={"resultTable float-left"}/>}
                     </div>
 
                     <div className="processImageComponent">

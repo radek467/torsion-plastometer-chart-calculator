@@ -10,7 +10,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/app/results")
-public class ImageResultController {
+class ImageResultController {
     private final ImageResultService imageResultService;
 
     public ImageResultController(ImageResultService imageResultService) {

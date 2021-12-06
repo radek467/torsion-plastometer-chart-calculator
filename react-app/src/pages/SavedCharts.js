@@ -37,7 +37,12 @@ const createImagesVisualisations = (images) => {
         return (
             <tr>
                 <td className={"resultCell"}>{<ResultPresentation sigma={image.sigmas} alternativeDeformations={image.alternativeDeformations} classNames={"imageResultTable float-left fontSize-10"}/>}</td>
-                <td className={"resultCell"}><img src={image.imageURL} className={"savedImage"}/></td>
+                <td className={"resultCell"}>
+                    <div style={{paddingLeft: "30%"}}>
+                        <p style={{color: "white"}}>{image.name}</p>
+                    </div>
+                    <img src={image.imageURL} className={"savedImage"}/>
+                </td>
             </tr>
         )
     });
