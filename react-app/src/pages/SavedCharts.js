@@ -4,8 +4,9 @@ import ResultPresentation from "../components/ResultPresentation";
 
 import '../styles/savedCharts.css'
 import '../styles/mainStyles.css'
+import {URL} from "../Address"
 
-const RESULT_URL = "http://localhost:8080//app/results"
+const RESULT_URL = URL + "app/results"
 
 export const SavedCharts = () => {
 
