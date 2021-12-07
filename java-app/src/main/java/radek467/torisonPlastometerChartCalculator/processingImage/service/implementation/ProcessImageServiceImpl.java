@@ -40,8 +40,8 @@ class ProcessImageServiceImpl implements ProcessImageService {
 
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(ProcessedResultExportHeaders.getNames());
-            for(int i = 0; i < result.getSigmap().size(); i++) {
-                csvPrinter.printRecord(result.getSigmap().get(i), result.getAlternativeDeformations().get(i));
+            for (int i = 0; i < result.getSigmap().size(); i++) {
+                csvPrinter.printRecord(result.getN().get(i), result.getSigmap().get(i), result.getAlternativeDeformations().get(i));
             }
         } catch (IOException e) {
             System.err.println("Error While writing CSV " + e);

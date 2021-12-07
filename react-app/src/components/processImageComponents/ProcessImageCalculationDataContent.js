@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import DeviationResultTable from "./DeviationResultTable";
 
-import '../styles/calculationDataContent.css'
-import '../styles/mainStyles.css'
-import {URL} from "../Address"
+import '../../styles/calculationDataContent.css'
+import '../../styles/mainStyles.css'
+import {URL} from "../../Address"
 
 const RESULT_URL = URL + "app/processImage"
 
@@ -38,7 +38,6 @@ const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChar
             <div className="confirmButtons">
                 <button
                     className="button"
-                    // onClick={() => console.log("moment chart deviations: " + momentChartDeviations + " strength chart deviations: " + strengthChartDeviations)}>
                     onClick={
                         async () => {
                             await sendDataToCalculate({

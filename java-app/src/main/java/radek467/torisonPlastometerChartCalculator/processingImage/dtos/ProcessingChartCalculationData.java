@@ -2,12 +2,10 @@ package radek467.torisonPlastometerChartCalculator.processingImage.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Setter;
 import radek467.torisonPlastometerChartCalculator.processingImage.model.ProcessChartCalculationDataModel;
 
 import java.util.List;
 
-@Setter
 @AllArgsConstructor
 @Builder
 public class ProcessingChartCalculationData {

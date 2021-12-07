@@ -21,8 +21,6 @@ const ResultPresentation = ({sigma, alternativeDeformations, classNames}) => {
 
 const createTableContent = (sigma, alternativeDeformations) => {
     const tableContent = [];
-    console.log(sigma)
-    console.log(alternativeDeformations)
 
     tableContent.push(
         <tr>
@@ -32,6 +30,8 @@ const createTableContent = (sigma, alternativeDeformations) => {
         </tr>
     )
 
+    console.log(sigma)
+    console.log(alternativeDeformations)
     for(let i = 0; i < sigma.length || i < alternativeDeformations.length; i++) {
         tableContent.push(
             <tr>

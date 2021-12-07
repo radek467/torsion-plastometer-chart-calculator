@@ -1,8 +1,8 @@
 package radek467.torisonPlastometerChartCalculator.processingImage;
 
 import lombok.NoArgsConstructor;
-import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessingChartCalculationResult;
 import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessingChartCalculationData;
+import radek467.torisonPlastometerChartCalculator.processingImage.dtos.ProcessingChartCalculationResult;
 import radek467.torisonPlastometerChartCalculator.processingImage.model.ProcessChartCalculationDataModel;
 
 import java.util.ArrayList;
@@ -34,13 +34,8 @@ public class ProcessChartCalculator {
     }
 
     private List<Double> calculateRandomValueFromFColumn() {
-        List<Double> list = new ArrayList<>();
-        list.add(0.5);
-        for(int i = 1; i < calculationDataModel.getMomentChartDeviations().size(); i++){
-            list.add((double) i);
-        }
-        calculationDataModel.setDeformationForEachChartPoint(list);
-        return calculationDataModel.getDeformationForEachChartPoint()
+        List<Double> list = generateN();
+        return list
                 .stream()
                 .map(value -> value * calculationDataModel.getDeformation())
                 .collect(Collectors.toList());
@@ -56,7 +51,7 @@ public class ProcessChartCalculator {
 
     private List<Double> calculateSigma(List<Double> momentsInMm, List<Double> strengthsInMm) {
         List<Double> sigmaResults = new ArrayList<>();
-        for(int i = 0; i < momentsInMm.size(); i++) {
+        for (int i = 0; i < momentsInMm.size(); i++) {
             double moment = momentsInMm.get(i);
             double strength = strengthsInMm.get(i);
             double result = (1 / (9 * 3.14)) * Math.sqrt(Math.pow(strength, 2) + 75 * 10000 * Math.pow(moment, 2));
@@ -67,7 +62,7 @@ public class ProcessChartCalculator {
 
     public ProcessingChartCalculationResult getProcessedData() {
         ProcessingChartCalculationResult processedData = new ProcessingChartCalculationResult(calculationDataModel);
-        if(isCalculatedDataEmpty(processedData)){
+        if (isCalculatedDataEmpty(processedData)) {
             throw new IllegalStateException("Calculation went wrong");
         }
         return processedData;
@@ -75,5 +70,15 @@ public class ProcessChartCalculator {
 
     private boolean isCalculatedDataEmpty(ProcessingChartCalculationResult processedData) {
         return processedData.getAlternativeDeformations().isEmpty() || processedData.getSigmap().isEmpty();
+    }
+
+    private List<Double> generateN() {
+        List<Double> list = new ArrayList<>();
+        list.add(0.5);
+        for (int i = 1; i < calculationDataModel.getMomentChartDeviations().size(); i++) {
+            list.add((double) i);
+        }
+        calculationDataModel.setN(list);
+        return list;
     }
 }

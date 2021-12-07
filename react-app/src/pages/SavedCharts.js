@@ -30,11 +30,9 @@ export const SavedCharts = () => {
 
 const createImagesVisualisations = (images) => {
     if (isArrayEmpty(images)) {
-        console.log("empty")
         return <></>
     }
     return images.map(image => {
-        console.log(image)
         return (
             <tr>
                 <td className={"resultCell"}>{<ResultPresentation sigma={image.sigmas} alternativeDeformations={image.alternativeDeformations} classNames={"imageResultTable float-left fontSize-10"}/>}</td>

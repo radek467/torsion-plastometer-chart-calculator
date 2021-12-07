@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../styles/calculationDataContent.css'
+import '../../styles/calculationDataContent.css'
 
 const DeviationResultTable = ({momentChartDeviations, strengthChartDeviations}) => {
     let resultTable = "";

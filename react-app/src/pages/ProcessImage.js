@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import Popup from "../components/Popup";
-import ProcessImageCalculationDataContent from "../components/ProcessImageCalculationDataContent"
+import ProcessImageCalculationDataContent from "../components/processImageComponents/ProcessImageCalculationDataContent"
 import {getValueOfOnePixelInMillimeters} from "../alghoritms/imageProcessing/getValueOfOnePixelInMillimeters";
 import {clearBackground} from "../alghoritms/imageProcessing/clearBackground";
-import Cropper from "../components/Cropper";
+import Cropper from "../components/processImageComponents/Cropper";
 import Image from "../components/Image";
 import {getTurnsPoints} from "../alghoritms/imageProcessing/getTurnsPoints";
 import {getResults} from "../alghoritms/imageProcessing/getChartsDeviations";
@@ -11,7 +11,7 @@ import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 
 import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
-import SaveImagePopupContent from "../components/SaveImagePopup";
+import SaveImagePopupContent from "../components/processImageComponents/SaveImagePopup";
 import {URL} from "../Address"
 
 
@@ -203,12 +203,12 @@ export const ProcessImage = () => {
                     </div>
 
                     <div className="processImageComponent">
-                        <Image title={"initial"} src={momentChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{with: '13vh', height: '60vh'}}></Image>
-                        <Image title={"initial"} src={strengthChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{width: '30vh', height: '60vh'}}></Image>
-                        <Image title={"initial"} src={turnsChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{width: '1vh', height: '60vh'}}></Image>
+                        <img src={momentChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{with: '13vh', height: '60vh'}}/>
+                        <img src={strengthChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{width: '30vh', height: '60vh'}}/>
+                        <img src={turnsChart} alt={"fromCrop"}
+                               className={'whole-picture'} style={{width: '1vh', height: '60vh'}}/>
                     </div>
                 </>
             }

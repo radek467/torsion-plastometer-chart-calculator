@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {URL} from "../Address"
+import {URL} from "../../Address"
 
 const RESULT_SAVE_URL = URL + "app/results/save"
 
