@@ -12,7 +12,7 @@ import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
 import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
 import SaveImagePopupContent from "../components/SaveImagePopup";
-
+import {URL} from "../Address"
 
 
 
@@ -53,7 +53,7 @@ export const ProcessImage = () => {
     }
 
     const exportData = () => {
-        fetch("http://localhost:8080//app/processImage/export")
+        fetch(URL + "app/processImage/export")
             .then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(

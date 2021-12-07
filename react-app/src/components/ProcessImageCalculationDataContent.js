@@ -3,8 +3,9 @@ import DeviationResultTable from "./DeviationResultTable";
 
 import '../styles/calculationDataContent.css'
 import '../styles/mainStyles.css'
+import {URL} from "../Address"
 
-const RESULT_URL = "http://localhost:8080//app/processImage"
+const RESULT_URL = URL + "app/processImage"
 
 
 const ProcessImageCalculationDataContent = ({momentChartDeviations, strengthChartDeviations, setSigma, setAlternativeDeformations, togglePopup}) => {

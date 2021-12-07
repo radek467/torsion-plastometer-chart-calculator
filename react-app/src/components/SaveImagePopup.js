@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import {URL} from "../Address"
 
-const RESULT_SAVE_URL = "http://localhost:8080//app/results/save"
+const RESULT_SAVE_URL = URL + "app/results/save"
 
 const SaveImagePopupContent = ({initialImage, sigma, alternativeDeformations, handleClose}) => {
     const [imageName, setImageName] = useState("");
