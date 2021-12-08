@@ -29,9 +29,6 @@ const createTableContent = (sigma, alternativeDeformations) => {
             <td className="resultTableCell">Random</td>
         </tr>
     )
-
-    console.log(sigma)
-    console.log(alternativeDeformations)
     for(let i = 0; i < sigma.length || i < alternativeDeformations.length; i++) {
         tableContent.push(
             <tr>

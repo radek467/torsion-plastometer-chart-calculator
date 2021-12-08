@@ -5,6 +5,7 @@ import ResultPresentation from "../components/ResultPresentation";
 import '../styles/savedCharts.css'
 import '../styles/mainStyles.css'
 import {URL} from "../Address"
+import ResultChart from "../components/ResultChart";
 
 const RESULT_URL = URL + "app/results"
 
@@ -41,6 +42,10 @@ const createImagesVisualisations = (images) => {
                         <p style={{color: "white"}}>{image.name}</p>
                     </div>
                     <img src={image.imageURL} className={"savedImage"}/>
+                </td>
+
+                <td className={"resultCell"}>
+                    <ResultChart data={{sigma: image.sigmas, alternativeDeformations: image.alternativeDeformations}} />
                 </td>
             </tr>
         )

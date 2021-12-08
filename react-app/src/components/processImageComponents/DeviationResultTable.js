@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import '../../styles/calculationDataContent.css'
 
 const DeviationResultTable = ({momentChartDeviations, strengthChartDeviations}) => {
-    let resultTable = "";
+    const [,updateState] = useState("")
     if (momentChartDeviations.length !== strengthChartDeviations.length) {
         return (
             <>
@@ -12,7 +12,7 @@ const DeviationResultTable = ({momentChartDeviations, strengthChartDeviations}) 
         )
     }
 
-    resultTable = momentChartDeviations.map((element, index) => {
+    const table = momentChartDeviations.map((element, index) => {
         return (
             <tr key={index}>
                 <td>{index + 1}</td>
@@ -21,6 +21,14 @@ const DeviationResultTable = ({momentChartDeviations, strengthChartDeviations}) 
                 <td><input className="table-input" type="number" step="0.1"
                            defaultValue={strengthChartDeviations[index].toFixed(3)}
                            onChange={e => strengthChartDeviations[index] = parseFloat(e.target.value)}/></td>
+                <td>
+                    <button onClick={() => {
+                        momentChartDeviations.splice(index, 1)
+                        strengthChartDeviations.splice(index, 1)
+                        table.splice(index, 1)
+                        updateState(table)
+                    }}>X</button>
+                </td>
             </tr>
         )
     })
@@ -29,7 +37,7 @@ const DeviationResultTable = ({momentChartDeviations, strengthChartDeviations}) 
         <>
             <table className="table">
                 <tbody>
-                {resultTable}
+                {table}
                 </tbody>
             </table>
         </>

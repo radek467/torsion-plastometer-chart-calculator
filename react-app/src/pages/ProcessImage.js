@@ -4,7 +4,6 @@ import ProcessImageCalculationDataContent from "../components/processImageCompon
 import {getValueOfOnePixelInMillimeters} from "../alghoritms/imageProcessing/getValueOfOnePixelInMillimeters";
 import {clearBackground} from "../alghoritms/imageProcessing/clearBackground";
 import Cropper from "../components/processImageComponents/Cropper";
-import Image from "../components/Image";
 import {getTurnsPoints} from "../alghoritms/imageProcessing/getTurnsPoints";
 import {getResults} from "../alghoritms/imageProcessing/getChartsDeviations";
 import {isArrayEmpty} from "../alghoritms/utils/collectionUtils";
@@ -13,7 +12,7 @@ import ResultPresentation from "../components/ResultPresentation"
 import "../styles/processImage.css"
 import SaveImagePopupContent from "../components/processImageComponents/SaveImagePopup";
 import {URL} from "../Address"
-
+import ResultChart from "../components/ResultChart";
 
 
 export const ProcessImage = () => {
@@ -188,7 +187,9 @@ export const ProcessImage = () => {
                 <Popup
                     content={
                         <>
-                            <SaveImagePopupContent initialImage={initialImage} sigma={sigma} alternativeDeformations={alternativeDeformations} handleClose={toggleSavePopup}/>
+                            <SaveImagePopupContent initialImage={initialImage} sigma={sigma}
+                                                   alternativeDeformations={alternativeDeformations}
+                                                   handleClose={toggleSavePopup}/>
                         </>
                     }
                     handleClose={toggleSavePopup}
@@ -203,12 +204,14 @@ export const ProcessImage = () => {
                     </div>
 
                     <div className="processImageComponent">
-                        <img src={momentChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{with: '13vh', height: '60vh'}}/>
-                        <img src={strengthChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{width: '30vh', height: '60vh'}}/>
-                        <img src={turnsChart} alt={"fromCrop"}
-                               className={'whole-picture'} style={{width: '1vh', height: '60vh'}}/>
+                        <img src={momentChart} alt={"fromCrop"} style={{width: '11vw', height: "23vw"}}/>
+                        <img src={strengthChart} alt={"fromCrop"} style={{width: '11vw', height: "23vw"}}/>
+                        <img src={turnsChart} alt={"fromCrop"} style={{width: '2vw', height: "23vw"}}/>
+                    </div>
+
+                    <div className="processImageComponent processImage-resultChart ">
+                        {isArrayEmpty(sigma) || isArrayEmpty(alternativeDeformations) ? "" : <ResultChart data={{sigma, alternativeDeformations}}/>}
+
                     </div>
                 </>
             }

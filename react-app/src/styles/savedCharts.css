@@ -16,14 +16,14 @@
     text-align: left;
     max-height: 25vh;
     margin-top: 20px;
-    margin-left: 100px;
+    margin-left: 1%;
     width: 70%;
     padding: 20px;
 }
 
 .resultCell {
     max-height: 50px;
-    padding-left: 0;
+    padding-left: 50px;
     padding-top: 20px;
     padding-bottom: 20px;
     border-bottom: 2px solid #61dafb;

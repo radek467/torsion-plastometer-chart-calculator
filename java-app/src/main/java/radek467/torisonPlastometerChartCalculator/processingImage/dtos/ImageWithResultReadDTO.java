@@ -2,11 +2,13 @@ package radek467.torisonPlastometerChartCalculator.processingImage.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 @Builder
 public class ImageWithResultReadDTO {
