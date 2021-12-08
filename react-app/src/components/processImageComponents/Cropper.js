@@ -56,7 +56,6 @@ export default function Cropper({image, setMomentChart, setStrengthChart, setTur
             />
             <div>
                 <canvas
-                    //todo investigate why ref is needed
                     ref={previewCanvasRef}
                     // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
                     style={{
@@ -67,9 +66,9 @@ export default function Cropper({image, setMomentChart, setStrengthChart, setTur
             </div>
 
             <div>
-                {createButton("Get moment chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setMomentChart))}
-                {createButton("Get strength chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setStrengthChart))}
-                {createButton("Get turns chart", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setTurnsChart))}
+                {createButton("Wytnij wykres momentu", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setMomentChart))}
+                {createButton("Wytnij wykres siły", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setStrengthChart))}
+                {createButton("Wytnij skręty", !completedCrop?.width || !completedCrop?.height, () => getImage(previewCanvasRef.current, completedCrop, setTurnsChart))}
             </div>
         </div>
     );

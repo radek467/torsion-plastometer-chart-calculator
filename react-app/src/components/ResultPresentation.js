@@ -26,7 +26,7 @@ const createTableContent = (sigma, alternativeDeformations) => {
         <tr>
             <td className="resultTableCell"><p>L.p</p></td>
             <td className="resultTableCell"><p>Sigma</p></td>
-            <td className="resultTableCell">Random</td>
+            <td className="resultTableCell">Odkształcenie zastępcze</td>
         </tr>
     )
     for(let i = 0; i < sigma.length || i < alternativeDeformations.length; i++) {
